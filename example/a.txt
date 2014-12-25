@@ -1,0 +1,11 @@
+text file a
+
+<start-a-1>
+a1
+<end-a-1>
+
+<start-a-2>
+a2a2
+<end-a-2>
+
+===========
