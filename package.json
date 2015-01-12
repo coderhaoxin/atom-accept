@@ -1,6 +1,6 @@
 {
   "name": "partial-file-sync",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "sync text files partially",
   "main": "index.js",
   "scripts": {
@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/coderhaoxin/partial-file-sync/issues"
   },
-  "homepage": "https://github.com/coderhaoxin/partial-file-sync"
+  "homepage": "https://github.com/coderhaoxin/partial-file-sync",
+  "dependencies": {
+    "debug": "2"
+  }
 }

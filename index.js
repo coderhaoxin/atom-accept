@@ -1,6 +1,7 @@
 'use strict';
 
-var write = require('fs').writeFileSync,
+var debug = require('debug')('partial-file-sync'),
+  write = require('fs').writeFileSync,
   read = require('fs').readFileSync,
   resolve = require('path').resolve,
   watch = require('fs').watchFile,
@@ -25,6 +26,7 @@ function filesync(options) {
   assert(typeof options === 'object', 'options required');
   assert(Array.isArray(options.list), 'options.list must be array');
 
+  var interval = options.interval || 1000;
   var list = options.list;
 
   for (var i = 0; i < list.length; i++) {
@@ -33,10 +35,12 @@ function filesync(options) {
       dest = resolve(task.dest),
       flags = task.flags;
 
+    debug('create worker: from - %s, dest - %s, flags: %j', from, dest, flags);
     var worker = factory(from, dest, flags);
 
     watch(from, {
-      persistent: true
+      persistent: true,
+      interval: interval
     }, worker).on('error', function(e) {
       console.error(e);
     });
@@ -45,6 +49,7 @@ function filesync(options) {
 
 function factory(from, dest, flags) {
   return function() {
+    debug('worker: from - %s, dest - %s, flags: %j', from, dest, flags);
     sync(from, dest, flags);
   };
 }
@@ -72,7 +77,7 @@ function sync(from, dest, flags) {
     end = result.indexOf(flag.end);
 
     result = result.slice(0, start) + data + result.slice(end);
-
+    debug('write file: dest - %s', dest);
     write(dest, result, {
       encoding: 'utf-8'
     });
